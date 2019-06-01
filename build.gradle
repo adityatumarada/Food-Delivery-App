@@ -17,9 +17,6 @@ buildscript {
     }
 }
 
-exec {
-    commandLine "/usr/local/bin/code-sync.sh", "commit", "test"
-}
 
 subprojects {
     apply plugin: "java-library"
