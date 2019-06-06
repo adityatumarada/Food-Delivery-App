@@ -203,10 +203,10 @@ public class RestaurantControllerTest {
     uri = UriComponentsBuilder
         .fromPath(RESTAURANT_API_URI)
         .queryParam("latitude", "10")
-        .queryParam("longitude", "-1")
+        .queryParam("longitude", "-181")
         .build().toUri();
 
-    assertEquals(RESTAURANT_API_URI + "?latitude=10&longitude=-1", uri.toString());
+    assertEquals(RESTAURANT_API_URI + "?latitude=10&longitude=-181", uri.toString());
 
     // calling api without latitude and longitude
     response = mvc.perform(
