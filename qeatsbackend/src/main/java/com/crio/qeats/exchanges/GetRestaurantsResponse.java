@@ -6,10 +6,15 @@
 
 package com.crio.qeats.exchanges;
 
+
+import com.crio.qeats.dto.Restaurant;
+
+import java.util.List;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import java.util.List;
+
 
 // TODO: CRIO_TASK_MODULE_RESTAURANTSAPI - Implement GetRestaurantsResponse.
 // Complete the class such that it produces the following JSON during serialization.
@@ -47,88 +52,17 @@ import java.util.List;
 // }
 @Data
 @NoArgsConstructor
+@AllArgsConstructor
+
 public class GetRestaurantsResponse {
-  private String restaurantId;
-  private String name;
-  private String city;
-  private String imageUrl;
-  private double latitude;
-  private double longitude;
-  private String opensAt;
-  private String closesAt;
-  private List<String> attributes;
 
+  List<Restaurant> restaurants;
 
-  public String getRestaurantId() {
-    return restaurantId;
+  public void setRestaurants(List<Restaurant> restaurants) {
+    this.restaurants = restaurants;
   }
 
-  public String getName() {
-    return name;
+  public List<Restaurant> getRestaurants() {
+    return restaurants;
   }
-
-  public String getCity() {
-    return city;
-  }
-
-  public String getImageUrl() {
-    return imageUrl;
-  }
-
-  public Double getLatitude() {
-    return latitude;
-  }
-
-  public double getLongitude() {
-    return longitude;
-  }
-
-  public String getClosesAt() {
-    return closesAt;
-  }
-
-  public String getOpensAt() {
-    return opensAt;
-  }
-
-  public void setRestaurantId(String restaurantId) {
-    this.restaurantId = restaurantId;
-  }
-
-  public void setName(String name) {
-    this.name = name;
-  }
-
-  public void setCity(String city) {
-    this.city = city;
-  }
-
-  public void setLatitude(double latitude) {
-    this.latitude = latitude;
-  }
-
-  public void setClosesAt(String closesAt) {
-    this.closesAt = closesAt;
-  }
-
-  public void setImageUrl(String imageUrl) {
-    this.imageUrl = imageUrl;
-  }
-
-  public void setLongitude(double longitude) {
-    this.longitude = longitude;
-  }
-
-  public void setOpensAt(String opensAt) {
-    this.opensAt = opensAt;
-  }
-
-  public void setAttributes(List<String> attributes) {
-    this.attributes = attributes;
-  }
-
-  public List<String> getAttributes() {
-    return attributes;
-  }
-
 }

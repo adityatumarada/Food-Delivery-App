@@ -4,12 +4,16 @@ import com.crio.qeats.dto.Restaurant;
 import com.crio.qeats.utils.FixtureHelpers;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+
 import java.io.IOException;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
+
 import org.springframework.stereotype.Service;
+
+import static com.crio.qeats.utils.GeoUtils.findDistanceInKm;
 
 @Service
 public class RestaurantRepositoryServiceDummyImpl implements RestaurantRepositoryService {
@@ -18,7 +22,7 @@ public class RestaurantRepositoryServiceDummyImpl implements RestaurantRepositor
 
   private List<Restaurant> loadRestaurantsDuringNormalHours() throws IOException {
     String fixture =
-        FixtureHelpers.fixture(FIXTURES + "/normal_hours_list_of_restaurants.json");
+            FixtureHelpers.fixture(FIXTURES + "/normal_hours_list_of_restaurants.json");
 
     return objectMapper.readValue(fixture, new TypeReference<List<Restaurant>>() {
     });
@@ -31,7 +35,7 @@ public class RestaurantRepositoryServiceDummyImpl implements RestaurantRepositor
   // it anymore.
   @Override
   public List<Restaurant> findAllRestaurantsCloseBy(Double latitude, Double longitude,
-      LocalTime currentTime, Double servingRadiusInKms) {
+                                                    LocalTime currentTime, Double servingRadiusInKms) {
     List<Restaurant> restaurantList = new ArrayList<>();
     try {
       restaurantList = loadRestaurantsDuringNormalHours();
@@ -39,8 +43,10 @@ public class RestaurantRepositoryServiceDummyImpl implements RestaurantRepositor
       e.printStackTrace();
     }
     for (Restaurant restaurant : restaurantList) {
-      restaurant.setLatitude(latitude + ThreadLocalRandom.current().nextDouble(0.000001, 0.2));
-      restaurant.setLongitude(longitude + ThreadLocalRandom.current().nextDouble(0.000001, 0.2));
+      if (findDistanceInKm(latitude, longitude, restaurant.getLatitude(), restaurant.getLongitude()) <= 3) {
+        restaurant.setLatitude(latitude + ThreadLocalRandom.current().nextDouble(0.000001, 0.2));
+        restaurant.setLongitude(longitude + ThreadLocalRandom.current().nextDouble(0.000001, 0.2));
+      }
     }
     return restaurantList;
   }

@@ -1,11 +1,12 @@
 package com.crio.qeats.dto;
 
-import java.lang.reflect.Array;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Iterator;
 import java.util.List;
-import java.util.ListIterator;
+import javax.validation.constraints.NotNull;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 // TODO: CRIO_TASK_MODULE_SERIALIZATION - Implement Restaurant class.
 // Complete the class such that it produces the following JSON during serialization.
@@ -18,94 +19,51 @@ import java.util.ListIterator;
 //  "longitude": 30.0,
 //  "opensAt": "18:00",
 //  "closesAt": "23:00",
-//  "attributes": [https://www.youtube.com/watch?v=QDFI19lj4OM
+//  "attributes": [
 //    "Tamil",
 //    "South Indian"
 //  ]
 // }
+// CRIO_SOLUTION_START_MODULE_SERIALIZATION
+// CRIO_NUDGE_START_MODULE_SERIALIZATION
+// 1. First let the user code with Getters/Setters
+// 2. Either when they are stuck or post module completion, we can introduce lombok.
+// Good chance that they will struggle when they miss out NoArgsConstructor.
+// CRIO_NUDGE_END_MODULE_SERIALIZATION
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+// CRIO_SOLUTION_END_MODULE_SERIALIZATION
 public class Restaurant {
 
+  // CRIO_SOLUTION_START_MODULE_SERIALIZATION
+  @NotNull @JsonIgnore
+  private String id;
+
+  @NotNull
   private String restaurantId;
+
+  @NotNull
   private String name;
+
+  @NotNull
   private String city;
+
+  @NotNull
   private String imageUrl;
-  private double latitude;
-  private double longitude;
+
+  @NotNull
+  private Double latitude;
+
+  @NotNull
+  private Double longitude;
+
+  @NotNull
   private String opensAt;
+
+  @NotNull
   private String closesAt;
-  private List<String> attributes;
 
-
-  public String getRestaurantId() {
-    return restaurantId;
-  }
-
-  public String getName() {
-    return name;
-  }
-
-  public String getCity() {
-    return city;
-  }
-
-  public String getImageUrl() {
-    return imageUrl;
-  }
-
-  public Double getLatitude() {
-    return latitude;
-  }
-
-  public double getLongitude() {
-    return longitude;
-  }
-
-  public String getClosesAt() {
-    return closesAt;
-  }
-
-  public String getOpensAt() {
-    return opensAt;
-  }
-
-  public void setRestaurantId(String restaurantId) {
-    this.restaurantId = restaurantId;
-  }
-
-  public void setName(String name) {
-    this.name = name;
-  }
-
-  public void setCity(String city) {
-    this.city = city;
-  }
-
-  public void setLatitude(double latitude) {
-    this.latitude = latitude;
-  }
-
-  public void setClosesAt(String closesAt) {
-    this.closesAt = closesAt;
-  }
-
-  public void setImageUrl(String imageUrl) {
-    this.imageUrl = imageUrl;
-  }
-
-  public void setLongitude(double longitude) {
-    this.longitude = longitude;
-  }
-
-  public void setOpensAt(String opensAt) {
-    this.opensAt = opensAt;
-  }
-
-  public void setAttributes(List<String> attributes) {
-    this.attributes = attributes;
-  }
-
-  public List<String> getAttributes() {
-    return attributes;
-  }
+  @NotNull
+  private List<String> attributes = new ArrayList<>();
 }
-

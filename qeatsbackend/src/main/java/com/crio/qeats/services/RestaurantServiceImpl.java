@@ -6,10 +6,14 @@
 
 package com.crio.qeats.services;
 
+import com.crio.qeats.dto.Restaurant;
 import com.crio.qeats.exchanges.GetRestaurantsRequest;
 import com.crio.qeats.exchanges.GetRestaurantsResponse;
 import com.crio.qeats.repositoryservices.RestaurantRepositoryService;
+
 import java.time.LocalTime;
+import java.util.List;
+
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -28,10 +32,33 @@ public class RestaurantServiceImpl implements RestaurantService {
   // Check RestaurantService.java file for the interface contract.
   @Override
   public GetRestaurantsResponse findAllRestaurantsCloseBy(
-      GetRestaurantsRequest getRestaurantsRequest, LocalTime currentTime) {
+          GetRestaurantsRequest getRestaurantsRequest, LocalTime currentTime) {
 
 
+    Double servingRadiusInKms = -1.0;
 
-     return null;
+    LocalTime timeone1 = LocalTime.of(7, 59, 59);
+    LocalTime timeone2 = LocalTime.of(10, 00, 01);
+    LocalTime timetwo1 = LocalTime.of(12, 59, 59);
+    LocalTime timetwo2 = LocalTime.of(14, 00, 01);
+    LocalTime timethree1 = LocalTime.of(18, 59, 59);
+    LocalTime timethree2 = LocalTime.of(21, 00, 01);
+
+    if (currentTime.isBefore(timeone2) && currentTime.isAfter(timeone1)) {
+      servingRadiusInKms = 3.0;
+    } else if (currentTime.isBefore(timetwo2) && currentTime.isAfter(timetwo1)) {
+      servingRadiusInKms = 3.0;
+    } else if (currentTime.isBefore(timethree2) && currentTime.isAfter(timethree1)) {
+      servingRadiusInKms = 3.0;
+    } else {
+      servingRadiusInKms = 5.0;
+    }
+
+    List<Restaurant> restaurantsCloseBy = restaurantRepositoryService.findAllRestaurantsCloseBy(
+            getRestaurantsRequest.getLatitude(), getRestaurantsRequest.getLongitude(),
+            currentTime, servingRadiusInKms);
+
+    return new GetRestaurantsResponse(restaurantsCloseBy);
+
   }
 }
