@@ -6,10 +6,11 @@
 
 package com.crio.qeats.exchanges;
 
-
 import com.crio.qeats.dto.Restaurant;
 
 import java.util.List;
+
+import javax.validation.constraints.NotNull;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -56,6 +57,7 @@ import lombok.NoArgsConstructor;
 
 public class GetRestaurantsResponse {
 
+  @NotNull
   List<Restaurant> restaurants;
 
   public void setRestaurants(List<Restaurant> restaurants) {

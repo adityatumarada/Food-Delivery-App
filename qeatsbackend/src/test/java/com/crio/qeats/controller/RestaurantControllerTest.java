@@ -196,7 +196,7 @@ public class RestaurantControllerTest {
   }
 
   @Test
-  public void noRequestParamResultsInBadHttpReuest() throws Exception {
+  public void noRequestParamResultsInBadHttpRequest() throws Exception {
     // mocks not required, since validation will fail before that.
     URI uri = UriComponentsBuilder
         .fromPath(RESTAURANT_API_URI)

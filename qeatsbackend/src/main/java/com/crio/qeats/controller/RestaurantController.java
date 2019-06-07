@@ -9,13 +9,20 @@ package com.crio.qeats.controller;
 import com.crio.qeats.exchanges.GetRestaurantsRequest;
 import com.crio.qeats.exchanges.GetRestaurantsResponse;
 import com.crio.qeats.services.RestaurantService;
+
 import java.time.LocalTime;
+
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
+
 
 @RestController
 @Log4j2
@@ -64,13 +71,30 @@ public class RestaurantController {
   // curl -X GET "http://localhost:8081/qeats/v1/restaurants?latitude=28.4900591&longitude=77.536386"
   @GetMapping(RESTAURANTS_API)
   public ResponseEntity<GetRestaurantsResponse> getRestaurants(
-          GetRestaurantsRequest getRestaurantsRequest) {
+          @Valid
+                  GetRestaurantsRequest getRestaurantsRequest) {
     log.info("getRestaurants called with {}", getRestaurantsRequest);
 
     GetRestaurantsResponse getRestaurantsResponse;
 
+    @NotNull
+    double lt = getRestaurantsRequest.getLatitude().doubleValue();
+    @NotNull
+    double lg = getRestaurantsRequest.getLongitude().doubleValue();
+
+    if (lt > 90
+            || lt < 0
+            || lg > 180
+            || lg < 0) {
+      return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+    }
+    if (getRestaurantsRequest.getLatitude() == null
+            || getRestaurantsRequest.getLongitude() == null) {
+      return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+    }
+
     getRestaurantsResponse = restaurantService
-        .findAllRestaurantsCloseBy(getRestaurantsRequest, LocalTime.now());
+            .findAllRestaurantsCloseBy(getRestaurantsRequest, LocalTime.now());
     log.info("getRestaurants returned {}", getRestaurantsResponse);
 
     return ResponseEntity.ok().body(getRestaurantsResponse);

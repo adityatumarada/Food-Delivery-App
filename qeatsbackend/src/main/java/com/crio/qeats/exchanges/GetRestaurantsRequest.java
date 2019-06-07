@@ -6,6 +6,8 @@
 
 package com.crio.qeats.exchanges;
 
+import javax.validation.constraints.NotNull;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -18,25 +20,15 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-
 public class GetRestaurantsRequest {
+  // Remember, Lombok does a lot of the work here.
+  // The http url parameters should have matching names.
+  // Spring takes care of the wiring.
 
-    private Double latitude;
-    private Double longitude;
+  @NotNull
+  Double latitude;
 
-    public Double getLongitude() {
-        return longitude;
-    }
+  @NotNull
+  Double longitude;
 
-    public Double getLatitude() {
-        return latitude;
-    }
-
-    public void setLatitude(Double latitude) {
-        this.latitude = latitude;
-    }
-
-    public void setLongitude(Double longitude) {
-        this.longitude = longitude;
-    }
 }

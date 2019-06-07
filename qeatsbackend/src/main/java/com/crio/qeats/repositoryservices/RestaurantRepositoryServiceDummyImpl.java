@@ -1,5 +1,7 @@
 package com.crio.qeats.repositoryservices;
 
+import static com.crio.qeats.utils.GeoUtils.findDistanceInKm;
+
 import com.crio.qeats.dto.Restaurant;
 import com.crio.qeats.utils.FixtureHelpers;
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -12,8 +14,6 @@ import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
 import org.springframework.stereotype.Service;
-
-import static com.crio.qeats.utils.GeoUtils.findDistanceInKm;
 
 @Service
 public class RestaurantRepositoryServiceDummyImpl implements RestaurantRepositoryService {
@@ -34,8 +34,8 @@ public class RestaurantRepositoryServiceDummyImpl implements RestaurantRepositor
   // the lat/long you pass. In the next module, once you start using mongodb, you will not use
   // it anymore.
   @Override
-  public List<Restaurant> findAllRestaurantsCloseBy(Double latitude, Double longitude,
-                                                    LocalTime currentTime, Double servingRadiusInKms) {
+  public List<Restaurant> findAllRestaurantsCloseBy(Double latitude,
+      Double longitude, LocalTime currentTime, Double servingRadiusInKms) {
     List<Restaurant> restaurantList = new ArrayList<>();
     try {
       restaurantList = loadRestaurantsDuringNormalHours();
@@ -43,7 +43,8 @@ public class RestaurantRepositoryServiceDummyImpl implements RestaurantRepositor
       e.printStackTrace();
     }
     for (Restaurant restaurant : restaurantList) {
-      if (findDistanceInKm(latitude, longitude, restaurant.getLatitude(), restaurant.getLongitude()) <= 3) {
+      if (findDistanceInKm(latitude, longitude,
+              restaurant.getLatitude(), restaurant.getLongitude()) <= 3) {
         restaurant.setLatitude(latitude + ThreadLocalRandom.current().nextDouble(0.000001, 0.2));
         restaurant.setLongitude(longitude + ThreadLocalRandom.current().nextDouble(0.000001, 0.2));
       }
