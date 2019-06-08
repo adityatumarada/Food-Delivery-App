@@ -104,5 +104,6 @@ public class RestaurantController {
         log.info("getRestaurants returned {}", getRestaurantsResponse);
     
         return ResponseEntity.ok().body(getRestaurantsResponse);
+
   }
 }
