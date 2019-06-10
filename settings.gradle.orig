@@ -6,10 +6,10 @@
 // Make sure the project name is the module name.
 // This is what will be used to decide what testsuites will be run by Crio.
 <<<<<<< HEAD
-rootProject.name = 'ME_QEATS_MODULE_RESTAURANTSAPI'
-=======
 rootProject.name = 'ME_QEATS_MODULE_NOSQL'
->>>>>>> 8ac76f3772c24e1d849c47be48ec0efdcb17b814
+=======
+rootProject.name = 'ME_QEATS_MODULE_DEBUG'
+>>>>>>> 5f8962385fd0c24cb159d381844975f4f5d72857
 
 include 'qeatsbackend'
 
