@@ -119,6 +119,7 @@ public class RestaurantRepositoryServiceImpl implements RestaurantRepositoryServ
       ObjectMapper mapper = new ObjectMapper();
       try {
         restaurantList = Arrays.asList(mapper.readValue(strlist, Restaurant[].class));
+        jedis.setex(geoHash.toBase32(), REDIS_ENTRY_EXPIRY_IN_SECONDS, strlist);
       } catch (IOException e) {
         e.printStackTrace();
       }
