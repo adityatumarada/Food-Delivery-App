@@ -15,7 +15,10 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.springframework.http.MediaType.APPLICATION_JSON_UTF8;
+<<<<<<< HEAD
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+=======
+>>>>>>> 58123040ff3382a325bdd4a7b25fbe08451da2b9
 
 import com.crio.qeats.QEatsApplication;
 import com.crio.qeats.exchanges.GetRestaurantsRequest;
@@ -51,6 +54,10 @@ import org.springframework.web.util.UriComponentsBuilder;
 @AutoConfigureMockMvc
 public class RestaurantControllerTest {
 
+<<<<<<< HEAD
+  //FIXME: REVIEW the api names
+=======
+>>>>>>> 58123040ff3382a325bdd4a7b25fbe08451da2b9
   private static final String RESTAURANT_API_URI = RESTAURANT_API_ENDPOINT + RESTAURANTS_API;
   private static final String FIXTURES = "fixtures/exchanges";
   private ObjectMapper objectMapper;
@@ -175,8 +182,11 @@ public class RestaurantControllerTest {
     assertEquals(HttpStatus.BAD_REQUEST.value(), response.getStatus());
   }
 
+<<<<<<< HEAD
+=======
 
 
+>>>>>>> 58123040ff3382a325bdd4a7b25fbe08451da2b9
   @Test
   public void incorrectlySpelledLatitudeParamResultsInBadHttpRequest() throws Exception {
     // mocks not required, since validation will fail before that.
@@ -197,7 +207,11 @@ public class RestaurantControllerTest {
   }
 
   @Test
+<<<<<<< HEAD
+  public void noRequestParamResultsInBadHttpRequest() throws Exception {
+=======
   public void noRequestParamResultsInBadHttpReuest() throws Exception {
+>>>>>>> 58123040ff3382a325bdd4a7b25fbe08451da2b9
     // mocks not required, since validation will fail before that.
     URI uri = UriComponentsBuilder
         .fromPath(RESTAURANT_API_URI)
@@ -251,4 +265,8 @@ public class RestaurantControllerTest {
     return objectMapper.readValue(fixture, GetRestaurantsResponse.class);
   }
 
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> 58123040ff3382a325bdd4a7b25fbe08451da2b9

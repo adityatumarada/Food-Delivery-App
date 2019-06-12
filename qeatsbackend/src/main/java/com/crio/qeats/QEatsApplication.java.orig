@@ -1,17 +1,17 @@
+<<<<<<< HEAD
+=======
 /*
  *
  *  * Copyright (c) Crio.Do 2019. All rights reserved
  *
  */
+>>>>>>> 58123040ff3382a325bdd4a7b25fbe08451da2b9
 
 package com.crio.qeats;
 
 import lombok.extern.log4j.Log4j2;
 import org.modelmapper.ModelMapper;
-<<<<<<< HEAD
-=======
 import org.springframework.boot.SpringApplication;
->>>>>>> 1df4720e2f7205caa501708b79db3b9cfa3d62a2
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Scope;
@@ -21,15 +21,15 @@ import org.springframework.context.annotation.Scope;
 public class QEatsApplication {
 
   public static void main(String[] args) {
-<<<<<<< HEAD
-    // You don't need to run main for serialization module.
-=======
     SpringApplication.run(QEatsApplication.class, args);
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> 58123040ff3382a325bdd4a7b25fbe08451da2b9
     // TIP:MODULE_RESTAPI: If your server starts successfully,
     // you can find the following message in the logs.
     log.info("Congrats! Your QEatsApplication server has started");
->>>>>>> 1df4720e2f7205caa501708b79db3b9cfa3d62a2
   }
 
   /**

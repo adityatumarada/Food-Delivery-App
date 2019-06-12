@@ -22,7 +22,11 @@ public class RestaurantEntity {
 
   @Id
   private String id;
+<<<<<<< HEAD
+  
+=======
 
+>>>>>>> 58123040ff3382a325bdd4a7b25fbe08451da2b9
   @NotNull
   private String restaurantId;
 

@@ -12,31 +12,24 @@ import static com.crio.qeats.utils.GeoUtils.findDistanceInKm;
 import com.crio.qeats.dto.Restaurant;
 import com.crio.qeats.models.RestaurantEntity;
 import com.crio.qeats.repositories.RestaurantRepository;
-
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
-import javax.inject.Provider;
-import javax.validation.Valid;
-
 =======
 import com.crio.qeats.dto.Restaurant;
+import com.crio.qeats.globals.GlobalConstants;
 import com.crio.qeats.models.RestaurantEntity;
 import com.crio.qeats.repositories.RestaurantRepository;
 import java.time.LocalTime;
 import java.util.List;
+>>>>>>> 58123040ff3382a325bdd4a7b25fbe08451da2b9
 import javax.inject.Provider;
->>>>>>> 5f8962385fd0c24cb159d381844975f4f5d72857
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
 
-<<<<<<< HEAD
-
-=======
->>>>>>> 5f8962385fd0c24cb159d381844975f4f5d72857
 @Service
 @Primary
 public class RestaurantRepositoryServiceImpl implements RestaurantRepositoryService {
@@ -47,34 +40,24 @@ public class RestaurantRepositoryServiceImpl implements RestaurantRepositoryServ
   @Autowired
   private Provider<ModelMapper> modelMapperProvider;
 
-<<<<<<< HEAD
-  private boolean isOpenNow(@Valid LocalTime time, RestaurantEntity res) {
-=======
   private boolean isOpenNow(LocalTime time, RestaurantEntity res) {
->>>>>>> 5f8962385fd0c24cb159d381844975f4f5d72857
     LocalTime openingTime = LocalTime.parse(res.getOpensAt());
     LocalTime closingTime = LocalTime.parse(res.getClosesAt());
 
     return time.isAfter(openingTime) && time.isBefore(closingTime);
   }
 
+<<<<<<< HEAD
   // TODO: CRIO_TASK_MODULE_NOSQL - Implement findAllRestaurantsCloseby.
   // Check RestaurantRepositoryService.java file for the interface contract.
   public List<Restaurant> findAllRestaurantsCloseBy(Double latitude,
       Double longitude, LocalTime currentTime, Double servingRadiusInKms) {
-<<<<<<< HEAD
-    return findAllRestaurantsCloseFromDb(latitude,
-            longitude, currentTime, servingRadiusInKms);
-=======
     return findAllRestaurantsCloseFromDb(latitude, longitude, currentTime, servingRadiusInKms);
->>>>>>> 5f8962385fd0c24cb159d381844975f4f5d72857
   }
 
   private List<Restaurant> findAllRestaurantsCloseFromDb(Double latitude, Double longitude,
                                                          LocalTime currentTime,
                                                          Double servingRadiusInKms) {
-
-<<<<<<< HEAD
     List<Restaurant> restaurantList = new ArrayList<>();
 
     for (RestaurantEntity restaurant : restaurantRepository.findAll()) {
@@ -101,13 +84,42 @@ public class RestaurantRepositoryServiceImpl implements RestaurantRepositoryServ
     }
 
     return restaurantList;
-
   }
 
+
 =======
+  // TODO: CRIO_TASK_MODULE_REDIS - Add cache support.
+  // Check RestaurantRepositoryService.java file for the interface contract.
+  public List<Restaurant> findAllRestaurantsCloseBy(Double latitude,
+      Double longitude, LocalTime currentTime, Double servingRadiusInKms) {
+    if (GlobalConstants.isCacheAvailable()) {
+      return findAllRestaurantsCloseByFromCache(latitude, longitude, currentTime,
+          servingRadiusInKms);
+    } else {
+      return findAllRestaurantsCloseFromDb(latitude, longitude, currentTime, servingRadiusInKms);
+    }
+  }
+
+  private List<Restaurant> findAllRestaurantsCloseFromDb(Double latitude, Double longitude,
+      LocalTime currentTime, Double servingRadiusInKms) {
+
      return null;
   }
 
 
->>>>>>> 5f8962385fd0c24cb159d381844975f4f5d72857
+  // TODO: CRIO_TASK_MODULE_REDIS - Implement caching.
+  /**
+   * Implement caching for restaurants closeby.
+   * Whenever the entry is not there in the cache, you will have to populate it from DB.
+   * If the entry is already available in the cache, then return it from cache to save DB lookup.
+   * The cache entries should expire in GlobalConstants.REDIS_ENTRY_EXPIRY_IN_SECONDS.
+   * Make sure you use something like a GeoHash with a slightly lower precision,
+   * so that for lat/long that are slightly close, the function returns the same set of restaurants.
+   */
+  private List<Restaurant> findAllRestaurantsCloseByFromCache(
+      Double latitude, Double longitude, LocalTime currentTime, Double servingRadiusInKms) {
+
+     return null;
+  }
+>>>>>>> 58123040ff3382a325bdd4a7b25fbe08451da2b9
 }

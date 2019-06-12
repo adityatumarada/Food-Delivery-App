@@ -6,7 +6,10 @@
 
 package com.crio.qeats.services;
 
+<<<<<<< HEAD
 import static org.junit.jupiter.api.Assertions.assertEquals;
+=======
+>>>>>>> 58123040ff3382a325bdd4a7b25fbe08451da2b9
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -47,6 +50,11 @@ class RestaurantServiceTest {
   private RestaurantRepositoryService restaurantRepositoryServiceMock;
   private ObjectMapper objectMapper;
 
+<<<<<<< HEAD
+  // find restaurant that opens shortly
+
+=======
+>>>>>>> 58123040ff3382a325bdd4a7b25fbe08451da2b9
   @BeforeEach
   void setup() {
     MockitoAnnotations.initMocks(this);

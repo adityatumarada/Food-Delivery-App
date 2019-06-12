@@ -6,12 +6,18 @@
 
 package com.crio.qeats.repositoryservices;
 
+<<<<<<< HEAD
 import static org.junit.jupiter.api.Assertions.assertEquals;
+=======
+>>>>>>> 58123040ff3382a325bdd4a7b25fbe08451da2b9
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import com.crio.qeats.QEatsApplication;
 import com.crio.qeats.dto.Restaurant;
+<<<<<<< HEAD
+=======
 import com.crio.qeats.globals.GlobalConstants;
+>>>>>>> 58123040ff3382a325bdd4a7b25fbe08451da2b9
 import com.crio.qeats.models.RestaurantEntity;
 import com.crio.qeats.utils.FixtureHelpers;
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -57,7 +63,10 @@ public class RestaurantRepositoryServiceTest {
   @AfterEach
   public void teardown() {
     mongoTemplate.dropCollection("restaurants");
+<<<<<<< HEAD
+=======
     GlobalConstants.destroyCache();
+>>>>>>> 58123040ff3382a325bdd4a7b25fbe08451da2b9
   }
 
   @Test

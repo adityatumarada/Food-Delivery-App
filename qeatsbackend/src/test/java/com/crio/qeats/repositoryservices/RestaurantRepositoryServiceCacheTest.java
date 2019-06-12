@@ -1,41 +1,37 @@
-/*
- *
- *  * Copyright (c) Crio.Do 2019. All rights reserved
- *
- */
-
 package com.crio.qeats.repositoryservices;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.mockito.Mockito.*;
 
+import ch.hsr.geohash.GeoHash;
 import com.crio.qeats.QEatsApplication;
 import com.crio.qeats.dto.Restaurant;
 import com.crio.qeats.globals.GlobalConstants;
 import com.crio.qeats.models.RestaurantEntity;
+import com.crio.qeats.repositories.RestaurantRepository;
 import com.crio.qeats.utils.FixtureHelpers;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;
 import java.time.LocalTime;
-import java.util.ArrayList;
 import java.util.List;
 import javax.inject.Provider;
 import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.data.mongodb.core.MongoTemplate;
+import redis.clients.jedis.Jedis;
 
-// TODO: CRIO_TASK_MODULE_NOSQL - Pass all the RestaurantRepositoryService test cases.
-// Make modifications to the tests if necessary.
+
 @SpringBootTest(classes = {QEatsApplication.class})
-public class RestaurantRepositoryServiceTest {
+class RestaurantRepositoryServiceCacheTest {
 
   private static final String FIXTURES = "fixtures/exchanges";
-  List<RestaurantEntity> allRestaurants = new ArrayList<>();
+
   @Autowired
   private RestaurantRepositoryService restaurantRepositoryService;
   @Autowired
@@ -45,47 +41,37 @@ public class RestaurantRepositoryServiceTest {
   @Autowired
   private Provider<ModelMapper> modelMapperProvider;
 
-  @BeforeEach
-  public void setup() throws IOException {
-    allRestaurants = listOfRestaurants();
-
-    for (RestaurantEntity restaurantEntity : allRestaurants) {
-      mongoTemplate.save(restaurantEntity, "restaurants");
-    }
-  }
+  @MockBean
+  private RestaurantRepository mockRestaurantRepository;
 
   @AfterEach
-  public void teardown() {
-    mongoTemplate.dropCollection("restaurants");
+  void teardown() {
     GlobalConstants.destroyCache();
   }
 
+
   @Test
-  public void restaurantsCloseByAndOpenNow(@Autowired MongoTemplate mongoTemplate) {
+  void restaurantsCloseByFromWarmCache(@Autowired MongoTemplate mongoTemplate) throws IOException {
     assertNotNull(mongoTemplate);
     assertNotNull(restaurantRepositoryService);
 
-    List<Restaurant> allRestaurantsCloseBy = restaurantRepositoryService
-        .findAllRestaurantsCloseBy(20.0, 30.0, LocalTime.of(18, 01), 3.0);
+    when(mockRestaurantRepository.findAll()).thenReturn(listOfRestaurants());
+     
+    Jedis jedis = GlobalConstants.getJedisPool().getResource();
 
-    ModelMapper modelMapper = modelMapperProvider.get();
+    // call it twice
+    List<Restaurant> allRestaurantsCloseBy = restaurantRepositoryService
+        .findAllRestaurantsCloseBy(20.0, 30.0, LocalTime.of(18, 1), 3.0);
+    allRestaurantsCloseBy = restaurantRepositoryService
+        .findAllRestaurantsCloseBy(20.0, 30.0, LocalTime.of(18, 1), 3.0);
+    GeoHash geoHash = GeoHash.withCharacterPrecision(20.0, 30.0, 7);
+
+    verify(mockRestaurantRepository, times(1)).findAll();
+    assertNotNull(jedis.get(geoHash.toBase32()));
     assertEquals(2, allRestaurantsCloseBy.size());
     assertEquals("11", allRestaurantsCloseBy.get(0).getRestaurantId());
     assertEquals("12", allRestaurantsCloseBy.get(1).getRestaurantId());
   }
-
-  @Test
-  public void noRestaurantsNearBy(@Autowired MongoTemplate mongoTemplate) {
-    assertNotNull(mongoTemplate);
-    assertNotNull(restaurantRepositoryService);
-
-    List<Restaurant> allRestaurantsCloseBy = restaurantRepositoryService
-        .findAllRestaurantsCloseBy(20.9, 30.0, LocalTime.of(18, 00), 3.0);
-
-    ModelMapper modelMapper = modelMapperProvider.get();
-    assertEquals(0, allRestaurantsCloseBy.size());
-  }
-
 
   private List<RestaurantEntity> listOfRestaurants() throws IOException {
     String fixture =
@@ -95,3 +81,4 @@ public class RestaurantRepositoryServiceTest {
     });
   }
 }
+

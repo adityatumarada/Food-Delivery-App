@@ -1,3 +1,8 @@
+/*
+ *
+ *  * Copyright (c) Crio.Do 2019. All rights reserved
+ *
+ */
 
 package com.crio.qeats;
 
@@ -14,6 +19,7 @@ public class QEatsApplication {
 
   public static void main(String[] args) {
     SpringApplication.run(QEatsApplication.class, args);
+
 
     // TIP:MODULE_RESTAPI: If your server starts successfully,
     // you can find the following message in the logs.
