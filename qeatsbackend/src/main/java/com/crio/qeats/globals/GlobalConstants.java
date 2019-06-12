@@ -56,9 +56,8 @@ public class GlobalConstants {
    * @return true / false if cache is available or not.
    */
   public static boolean isCacheAvailable() {
-
-    try (Jedis jedis = jedisPool.getResource()) {
-
+    if (jedisPool != null) {
+      Jedis jedis = jedisPool.getResource();
       if (jedis.isConnected()) {
         return true;
       }
