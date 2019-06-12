@@ -95,7 +95,6 @@ public class RestaurantRepositoryServiceImpl implements RestaurantRepositoryServ
     return restaurantList;
   }
 
-
   // TODO: CRIO_TASK_MODULE_REDIS - Implement caching.
 
   /**
@@ -117,12 +116,26 @@ public class RestaurantRepositoryServiceImpl implements RestaurantRepositoryServ
     if (jedis.exists(geoHash.toBase32())) {
       String strlist = jedis.get(geoHash.toBase32());
       ObjectMapper mapper = new ObjectMapper();
+      List<Restaurant> restaurantList1 = new ArrayList<>();
       try {
-        restaurantList = Arrays.asList(mapper.readValue(strlist, Restaurant[].class));
-        jedis.setex(geoHash.toBase32(), REDIS_ENTRY_EXPIRY_IN_SECONDS, strlist);
+        restaurantList1 = Arrays.asList(mapper.readValue(strlist, Restaurant[].class));
       } catch (IOException e) {
         e.printStackTrace();
       }
+
+      for (int i = 0; i < restaurantList1.size(); i++) {
+        if (isOpenNow(currentTime, change(restaurantList1.get(i)))) {
+          restaurantList.add(restaurantList1.get(i));
+        }
+      }
+      String listJsonString = " ";
+      try {
+        listJsonString = new ObjectMapper().writeValueAsString(restaurantList);
+      } catch (JsonProcessingException e) {
+        e.printStackTrace();
+      }
+      jedis.setex(geoHash.toBase32(), REDIS_ENTRY_EXPIRY_IN_SECONDS, listJsonString);
+
     } else {
       restaurantList = findAllRestaurantsCloseFromDb(latitude,
         longitude, currentTime, servingRadiusInKms);
