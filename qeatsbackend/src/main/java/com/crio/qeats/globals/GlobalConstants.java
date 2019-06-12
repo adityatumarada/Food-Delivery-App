@@ -84,8 +84,4 @@ public class GlobalConstants {
     initCache();
     return jedisPool;
   }
-
-  public static void setJedisPool(JedisPool abc) {
-    jedisPool = abc;
-  }
 }

@@ -71,7 +71,7 @@ public class RestaurantRepositoryServiceImpl implements RestaurantRepositoryServ
 
     for (RestaurantEntity restaurant : restaurantRepository.findAll()) {
       if (findDistanceInKm(latitude, longitude,
-          restaurant.getLatitude(), restaurant.getLongitude()) <= 3
+          restaurant.getLatitude(), restaurant.getLongitude()) <= servingRadiusInKms
           && isOpenNow(currentTime, restaurant)) {
         restaurant.setLatitude(latitude + ThreadLocalRandom.current().nextDouble(0.000001, 0.2));
         restaurant.setLongitude(longitude + ThreadLocalRandom.current().nextDouble(0.000001, 0.2));
