@@ -2,7 +2,9 @@ package com.crio.qeats.repositoryservices;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 import ch.hsr.geohash.GeoHash;
 import com.crio.qeats.QEatsApplication;
@@ -13,10 +15,12 @@ import com.crio.qeats.repositories.RestaurantRepository;
 import com.crio.qeats.utils.FixtureHelpers;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+
 import java.io.IOException;
 import java.time.LocalTime;
 import java.util.List;
 import javax.inject.Provider;
+
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.modelmapper.ModelMapper;
@@ -56,7 +60,7 @@ class RestaurantRepositoryServiceCacheTest {
     assertNotNull(restaurantRepositoryService);
 
     when(mockRestaurantRepository.findAll()).thenReturn(listOfRestaurants());
-     
+
     Jedis jedis = GlobalConstants.getJedisPool().getResource();
 
     // call it twice
