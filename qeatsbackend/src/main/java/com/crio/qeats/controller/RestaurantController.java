@@ -111,22 +111,6 @@ public class RestaurantController {
     @NotNull
     String str = getRestaurantsRequest.getSearchFor();
 
-    if (lt > 90
-      || lt < 0
-      || lg > 180
-      || lg < 0) {
-      return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-    }
-    if (getRestaurantsRequest.getLatitude() == null
-      || getRestaurantsRequest.getLongitude() == null) {
-      return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-    }
-
-    getRestaurantsResponse = restaurantService
-      .findAllRestaurantsCloseBy(getRestaurantsRequest, LocalTime.now());
-    log.info("getRestaurants returned {}", getRestaurantsResponse);
-
-
     if (str!=null&&!str.isEmpty()) {
       getRestaurantsResponse = restaurantService
         .findRestaurantsBySearchQuery(getRestaurantsRequest, LocalTime.now());
