@@ -29,7 +29,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.mongodb.core.MongoTemplate;
 
-// TODO: CRIO_TASK_MODULE_NOSQL - Pass all the RestaurantRepositoryService test cases.
+// TODO: CRIO_TASK_MODULE_NOSQL
+// Pass all the RestaurantRepositoryService test cases.
 // Make modifications to the tests if necessary.
 @SpringBootTest(classes = {QEatsApplication.class})
 public class RestaurantRepositoryServiceTest {
@@ -46,7 +47,7 @@ public class RestaurantRepositoryServiceTest {
   private Provider<ModelMapper> modelMapperProvider;
 
   @BeforeEach
-  public void setup() throws IOException {
+  void setup() throws IOException {
     allRestaurants = listOfRestaurants();
 
     for (RestaurantEntity restaurantEntity : allRestaurants) {
@@ -55,13 +56,13 @@ public class RestaurantRepositoryServiceTest {
   }
 
   @AfterEach
-  public void teardown() {
+  void teardown() {
     mongoTemplate.dropCollection("restaurants");
     GlobalConstants.destroyCache();
   }
 
   @Test
-  public void restaurantsCloseByAndOpenNow(@Autowired MongoTemplate mongoTemplate) {
+  void restaurantsCloseByAndOpenNow(@Autowired MongoTemplate mongoTemplate) {
     assertNotNull(mongoTemplate);
     assertNotNull(restaurantRepositoryService);
 
@@ -75,7 +76,7 @@ public class RestaurantRepositoryServiceTest {
   }
 
   @Test
-  public void noRestaurantsNearBy(@Autowired MongoTemplate mongoTemplate) {
+  void noRestaurantsNearBy(@Autowired MongoTemplate mongoTemplate) {
     assertNotNull(mongoTemplate);
     assertNotNull(restaurantRepositoryService);
 
@@ -86,6 +87,65 @@ public class RestaurantRepositoryServiceTest {
     assertEquals(0, allRestaurantsCloseBy.size());
   }
 
+  @Test
+  void tooEarlyNoRestaurantIsOpen(@Autowired MongoTemplate mongoTemplate) {
+    assertNotNull(mongoTemplate);
+    assertNotNull(restaurantRepositoryService);
+
+    List<Restaurant> allRestaurantsCloseBy = restaurantRepositoryService
+        .findAllRestaurantsCloseBy(20.0, 30.0, LocalTime.of(17, 59), 3.0);
+
+    ModelMapper modelMapper = modelMapperProvider.get();
+    assertEquals(0, allRestaurantsCloseBy.size());
+  }
+
+  @Test
+  void tooLateNoRestaurantIsOpen(@Autowired MongoTemplate mongoTemplate) {
+    assertNotNull(mongoTemplate);
+    assertNotNull(restaurantRepositoryService);
+
+    List<Restaurant> allRestaurantsCloseBy = restaurantRepositoryService
+        .findAllRestaurantsCloseBy(20.0, 30.0, LocalTime.of(23, 01), 3.0);
+
+    ModelMapper modelMapper = modelMapperProvider.get();
+    assertEquals(0, allRestaurantsCloseBy.size());
+  }
+
+  @Test
+  void findRestaurantsByName(@Autowired MongoTemplate mongoTemplate) {
+    assertNotNull(mongoTemplate);
+    assertNotNull(restaurantRepositoryService);
+
+    String searchFor = "A2B";
+    List<Restaurant> foundRestaurantsList = restaurantRepositoryService
+        .findRestaurantsByName(20.8, 30.1, searchFor,
+            LocalTime.of(20, 0), 5.0);
+
+    assertEquals(2, foundRestaurantsList.size());
+  }
+
+  @Test
+  void foundRestaurantsExactMatchesFirst(@Autowired MongoTemplate mongoTemplate) {
+    assertNotNull(mongoTemplate);
+    assertNotNull(restaurantRepositoryService);
+
+    String searchFor = "A2B";
+    List<Restaurant> foundRestaurantsList = restaurantRepositoryService
+        .findRestaurantsByName(20.8, 30.1, searchFor,
+            LocalTime.of(20, 0), 5.0);
+
+    assertEquals(2, foundRestaurantsList.size());
+    assertEquals("A2B", foundRestaurantsList.get(0).getName());
+    assertEquals("A2B Adyar Ananda Bhavan", foundRestaurantsList.get(1).getName());
+  }
+
+  void searchedAttributesIsSubsetOfRetrievedRestaurantAttributes() {
+    // TODO
+  }
+
+  void searchedAttributesIsCaseInsensitive() {
+    // TODO
+  }
 
   private List<RestaurantEntity> listOfRestaurants() throws IOException {
     String fixture =

@@ -9,18 +9,30 @@ package com.crio.qeats.controller;
 import com.crio.qeats.exchanges.GetRestaurantsRequest;
 import com.crio.qeats.exchanges.GetRestaurantsResponse;
 import com.crio.qeats.services.RestaurantService;
+<<<<<<< HEAD
+
 import java.time.LocalTime;
+
+import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
+
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+=======
+import java.time.LocalTime;
+import lombok.extern.log4j.Log4j2;
+import org.springframework.beans.factory.annotation.Autowired;
+>>>>>>> 965a8c32dbabf91b54a6cee4d022e188d44b7390
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.validation.Valid;
-import javax.validation.constraints.NotNull;
+<<<<<<< HEAD
 
+=======
+>>>>>>> 965a8c32dbabf91b54a6cee4d022e188d44b7390
 @RestController
 @Log4j2
 @RequestMapping(RestaurantController.RESTAURANT_API_ENDPOINT)
@@ -32,6 +44,17 @@ public class RestaurantController {
   @Autowired
   private RestaurantService restaurantService;
 
+<<<<<<< HEAD
+  // TODO: CRIO_TASK_MODULE_RESTAURANTSAPI - Implement the GetRestaurants API as per spec.
+  // Get the list of open restaurants near the specified latitude/longitude.
+  // API URI: /qeats/v1/restaurants?latitude=21.93&longitude=23.0
+  // Method: GET
+  // Query Params: latitude, longitude
+  // Success Output:
+  // 1. If there are open restaurants that are near the specified latitude/longitude,
+  //    return them as a list.
+  // 2. If there are no open restaurants in the specified range, return an empty array.
+=======
   // TODO: CRIO_TASK_MODULE_RESTAURANTSEARCH - Implement the GetRestaurants API as per spec.
   // Get the list of open restaurants near the specified latitude/longitude & matching searchFor.
   // API URI: /qeats/v1/restaurants?latitude=21.93&longitude=23.0&searchFor=tamil
@@ -71,6 +94,7 @@ public class RestaurantController {
   // - If there are no restaurants, return empty list of restaurants.
   //
   //
+>>>>>>> 965a8c32dbabf91b54a6cee4d022e188d44b7390
   // HTTP Code: 200
   // {
   //  "restaurants": [
@@ -95,11 +119,12 @@ public class RestaurantController {
   // HTTP Code: 4xx, if client side error.
   //          : 5xx, if server side error.
   // Eg:
-  // curl -X GET "http://localhost:8081/qeats/v1/restaurants?latitude=28.4900591&longitude=77.536386&searchFor=tamil"
+<<<<<<< HEAD
+  // curl -X GET "http://localhost:8081/qeats/v1/restaurants?latitude=28.4900591&longitude=77.536386"
   @GetMapping(RESTAURANTS_API)
   public ResponseEntity<GetRestaurantsResponse> getRestaurants(
-    @Valid
-      GetRestaurantsRequest getRestaurantsRequest) {
+          @Valid
+                  GetRestaurantsRequest getRestaurantsRequest) {
     log.info("getRestaurants called with {}", getRestaurantsRequest);
 
     GetRestaurantsResponse getRestaurantsResponse;
@@ -108,69 +133,38 @@ public class RestaurantController {
     double lt = getRestaurantsRequest.getLatitude().doubleValue();
     @NotNull
     double lg = getRestaurantsRequest.getLongitude().doubleValue();
-    @NotNull
-    String str = getRestaurantsRequest.getSearchFor();
 
     if (lt > 90
-      || lt < 0
-      || lg > 180
-      || lg < 0) {
+            || lt < 0
+            || lg > 180
+            || lg < 0) {
       return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
     if (getRestaurantsRequest.getLatitude() == null
-      || getRestaurantsRequest.getLongitude() == null) {
+            || getRestaurantsRequest.getLongitude() == null) {
       return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
 
     getRestaurantsResponse = restaurantService
-      .findAllRestaurantsCloseBy(getRestaurantsRequest, LocalTime.now());
+            .findAllRestaurantsCloseBy(getRestaurantsRequest, LocalTime.now());
     log.info("getRestaurants returned {}", getRestaurantsResponse);
 
-
-    if (str!=null&&!str.isEmpty()) {
-      getRestaurantsResponse = restaurantService
-        .findRestaurantsBySearchQuery(getRestaurantsRequest, LocalTime.now());
-    } else {
-      getRestaurantsResponse = restaurantService
-        .findAllRestaurantsCloseBy(getRestaurantsRequest, LocalTime.now());
-    }
-    log.info("getRestaurants returned {}", getRestaurantsResponse);
     return ResponseEntity.ok().body(getRestaurantsResponse);
+=======
+  // curl -X GET "http://localhost:8081/qeats/v1/restaurants?latitude=28.4900591&longitude=77.536386&searchFor=tamil"
+  @GetMapping(RESTAURANTS_API)
+  public ResponseEntity<GetRestaurantsResponse> getRestaurants(
+          GetRestaurantsRequest getRestaurantsRequest) {
+        log.info("getRestaurants called with {}", getRestaurantsRequest);
+    
+        GetRestaurantsResponse getRestaurantsResponse;
+    
+        getRestaurantsResponse = restaurantService
+            .findAllRestaurantsCloseBy(getRestaurantsRequest, LocalTime.now());
+        log.info("getRestaurants returned {}", getRestaurantsResponse);
+    
+        return ResponseEntity.ok().body(getRestaurantsResponse);
+
+>>>>>>> 965a8c32dbabf91b54a6cee4d022e188d44b7390
   }
 }
-//
-// log.info("getRestaurants called with {}", getRestaurantsRequest);
-//
-//   GetRestaurantsResponse getRestaurantsResponse;
-//
-//@NotNull
-//    double lt = getRestaurantsRequest.getLatitude().doubleValue();
-//@NotNull
-//    double lg = getRestaurantsRequest.getLongitude().doubleValue();
-//
-//      if (lt > 90
-//      || lt < 0
-//  || lg > 180
-//  || lg < 0) {
-//  return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-//  }
-//  if (getRestaurantsRequest.getLatitude() == null
-//  || getRestaurantsRequest.getLongitude() == null) {
-//  return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-//  }
-//
-//  String searchFor = getRestaurantsRequest.getSearchFor();
-//  boolean isSearch = searchFor != null && !searchFor.isEmpty();
-//
-//  if (isSearch) {
-//  getRestaurantsResponse = restaurantService
-//  .findRestaurantsBySearchQuery(getRestaurantsRequest, LocalTime.now());
-//  } else {
-//  getRestaurantsResponse = restaurantService
-//  .findAllRestaurantsCloseBy(getRestaurantsRequest, LocalTime.now());
-//  log.info("getRestaurants returned {}", getRestaurantsResponse);
-//  }
-//
-//  return ResponseEntity.ok().body(getRestaurantsResponse);
-//
-//

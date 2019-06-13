@@ -6,22 +6,34 @@
 
 package com.crio.qeats.exchanges;
 
+<<<<<<< HEAD
+import javax.validation.constraints.NotNull;
+
+=======
+>>>>>>> 965a8c32dbabf91b54a6cee4d022e188d44b7390
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.validation.constraints.NotNull;
-
 // TODO: CRIO_TASK_MODULE_RESTAURANTSAPI - Implement GetRestaurantsRequest.
 // Complete the class such that it is able to deserialize the incoming query params from
 // REST API clients.
+<<<<<<< HEAD
+// For instance, if a REST client calls API /qeats/v1/restaurants?latitude=21.93&longitude=23.0,
+// this class should be able to deserialize lat/long from that.
+=======
 // For instance, if a REST client calls API
 // /qeats/v1/restaurants?latitude=28.4900591&longitude=77.536386&searchFor=tamil,
 // this class should be able to deserialize lat/long and optional searchFor from that.
+>>>>>>> 965a8c32dbabf91b54a6cee4d022e188d44b7390
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 public class GetRestaurantsRequest {
+<<<<<<< HEAD
+  // Remember, Lombok does a lot of the work here.
+  // The http url parameters should have matching names.
+  // Spring takes care of the wiring.
 
   @NotNull
   Double latitude;
@@ -29,11 +41,10 @@ public class GetRestaurantsRequest {
   @NotNull
   Double longitude;
 
-  @NotNull
-  String searchFor;
-
-  public GetRestaurantsRequest(Double latitude, Double longitude) {
-    this.latitude=latitude;
-    this.longitude=longitude;
-  }
 }
+=======
+
+
+
+}
+>>>>>>> 965a8c32dbabf91b54a6cee4d022e188d44b7390

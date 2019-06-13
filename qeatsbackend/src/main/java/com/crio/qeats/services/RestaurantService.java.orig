@@ -25,6 +25,8 @@ public interface RestaurantService {
    */
   GetRestaurantsResponse findAllRestaurantsCloseBy(
       GetRestaurantsRequest getRestaurantsRequest, LocalTime currentTime);
+<<<<<<< HEAD
+=======
 
   /**
    * Get the restaurants by processing the query.
@@ -49,4 +51,5 @@ public interface RestaurantService {
    */
   GetRestaurantsResponse findRestaurantsBySearchQuery(
       GetRestaurantsRequest getRestaurantsRequest, LocalTime currentTime);
+>>>>>>> 965a8c32dbabf91b54a6cee4d022e188d44b7390
 }

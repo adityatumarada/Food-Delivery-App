@@ -6,10 +6,9 @@
 
 package com.crio.qeats.repositories;
 
-import com.crio.qeats.models.RestaurantEntity;
+import com.crio.qeats.models.MenuEntity;
 import org.springframework.data.mongodb.repository.MongoRepository;
 
-public interface RestaurantRepository extends MongoRepository<RestaurantEntity, String> {
+public interface MenuRepository extends MongoRepository<MenuEntity, String> {
 
 }
-

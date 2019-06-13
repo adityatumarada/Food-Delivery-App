@@ -25,6 +25,8 @@ public interface RestaurantRepositoryService {
    */
   List<Restaurant> findAllRestaurantsCloseBy(Double latitude, Double longitude,
       LocalTime currentTime, Double servingRadiusInKms);
+<<<<<<< HEAD
+=======
 
   /**
    * Get the list of open restaurants within the specified serving radius.
@@ -60,4 +62,5 @@ public interface RestaurantRepositoryService {
    */
   List<Restaurant> findRestaurantsByItemAttributes(Double latitude, Double longitude,
       String searchString, LocalTime currentTime, Double servingRadiusInKms);
+>>>>>>> 965a8c32dbabf91b54a6cee4d022e188d44b7390
 }

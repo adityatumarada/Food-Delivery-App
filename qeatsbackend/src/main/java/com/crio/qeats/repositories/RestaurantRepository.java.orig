@@ -10,6 +10,9 @@ import com.crio.qeats.models.RestaurantEntity;
 import org.springframework.data.mongodb.repository.MongoRepository;
 
 public interface RestaurantRepository extends MongoRepository<RestaurantEntity, String> {
+<<<<<<< HEAD
+=======
 
+>>>>>>> 965a8c32dbabf91b54a6cee4d022e188d44b7390
 }
 
