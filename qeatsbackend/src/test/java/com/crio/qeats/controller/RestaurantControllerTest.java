@@ -8,10 +8,8 @@ package com.crio.qeats.controller;
 
 import static com.crio.qeats.controller.RestaurantController.RESTAURANTS_API;
 import static com.crio.qeats.controller.RestaurantController.RESTAURANT_API_ENDPOINT;
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -27,11 +25,9 @@ import com.crio.qeats.services.RestaurantService;
 import com.crio.qeats.utils.FixtureHelpers;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-
 import java.io.IOException;
 import java.net.URI;
 import java.time.LocalTime;
-
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
@@ -122,7 +118,7 @@ public class RestaurantControllerTest {
     assertNotNull(sampleResponse);
 
     when(restaurantService
-        .findRestaurantsBySearchQuery(any(GetRestaurantsRequest.class), any(LocalTime.class)))
+        .findAllRestaurantsCloseBy(any(GetRestaurantsRequest.class), any(LocalTime.class)))
         .thenReturn(sampleResponse);
 
     ArgumentCaptor<GetRestaurantsRequest> argumentCaptor = ArgumentCaptor
@@ -194,10 +190,10 @@ public class RestaurantControllerTest {
     URI uri = UriComponentsBuilder
         .fromPath(RESTAURANT_API_URI)
         .queryParam("latitude", "10")
-        .queryParam("longitude", "181")
+        .queryParam("longitude", "-181")
         .build().toUri();
 
-    assertEquals(RESTAURANT_API_URI + "?latitude=10&longitude=181", uri.toString());
+    assertEquals(RESTAURANT_API_URI + "?latitude=10&longitude=-181", uri.toString());
 
     // calling api without latitude and longitude
     MockHttpServletResponse response = mvc.perform(

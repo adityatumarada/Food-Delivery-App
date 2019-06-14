@@ -49,4 +49,15 @@ public interface RestaurantService {
    */
   GetRestaurantsResponse findRestaurantsBySearchQuery(
       GetRestaurantsRequest getRestaurantsRequest, LocalTime currentTime);
+
+  /**
+   * Identical input and output to @link{findRestaurantsBySearchQuery} but
+   * use a multi-threaded implementation.
+   * @param getRestaurantsRequest valid lat/long with searchFor string
+   * @param currentTime current time
+   * @return GetRestaurantsResponse object containing a list of open restaurants or an
+   *     empty list if none fits the criteria.
+   */
+  GetRestaurantsResponse findRestaurantsBySearchQueryMt(
+      GetRestaurantsRequest getRestaurantsRequest, LocalTime currentTime);
 }

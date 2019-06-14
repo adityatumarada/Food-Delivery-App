@@ -28,6 +28,7 @@ public interface RestaurantRepositoryService {
 
   /**
    * Get the list of open restaurants within the specified serving radius.
+   *   - Ensure the restaurant is open currently.
    * @param searchString Query string for restaurants
    * @return list of restaurants
    */
@@ -60,4 +61,5 @@ public interface RestaurantRepositoryService {
    */
   List<Restaurant> findRestaurantsByItemAttributes(Double latitude, Double longitude,
       String searchString, LocalTime currentTime, Double servingRadiusInKms);
+
 }

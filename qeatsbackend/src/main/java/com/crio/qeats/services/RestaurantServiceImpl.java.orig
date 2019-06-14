@@ -8,19 +8,18 @@ package com.crio.qeats.services;
 
 <<<<<<< HEAD
 import com.crio.qeats.dto.Restaurant;
+=======
+>>>>>>> e0015dbefbe23c56d2b2a734d1897d760651b5b6
 import com.crio.qeats.exchanges.GetRestaurantsRequest;
 import com.crio.qeats.exchanges.GetRestaurantsResponse;
 import com.crio.qeats.repositoryservices.RestaurantRepositoryService;
-
 import java.time.LocalTime;
+<<<<<<< HEAD
+import java.util.ArrayList;
 import java.util.List;
 
 =======
-import com.crio.qeats.exchanges.GetRestaurantsRequest;
-import com.crio.qeats.exchanges.GetRestaurantsResponse;
-import com.crio.qeats.repositoryservices.RestaurantRepositoryService;
-import java.time.LocalTime;
->>>>>>> 965a8c32dbabf91b54a6cee4d022e188d44b7390
+>>>>>>> e0015dbefbe23c56d2b2a734d1897d760651b5b6
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -39,10 +38,8 @@ public class RestaurantServiceImpl implements RestaurantService {
   // Check RestaurantService.java file for the interface contract.
   @Override
   public GetRestaurantsResponse findAllRestaurantsCloseBy(
+      GetRestaurantsRequest getRestaurantsRequest, LocalTime currentTime) {
 <<<<<<< HEAD
-          GetRestaurantsRequest getRestaurantsRequest, LocalTime currentTime) {
-
-
     Double servingRadiusInKms = -1.0;
 
     LocalTime timeone1 = LocalTime.of(7, 59, 59);
@@ -63,19 +60,15 @@ public class RestaurantServiceImpl implements RestaurantService {
     }
 
     List<Restaurant> restaurantsCloseBy = restaurantRepositoryService.findAllRestaurantsCloseBy(
-            getRestaurantsRequest.getLatitude(), getRestaurantsRequest.getLongitude(),
-            currentTime, servingRadiusInKms);
+        getRestaurantsRequest.getLatitude(), getRestaurantsRequest.getLongitude(),
+        currentTime, servingRadiusInKms);
 
     return new GetRestaurantsResponse(restaurantsCloseBy);
-
-  }
-}
 =======
-      GetRestaurantsRequest getRestaurantsRequest, LocalTime currentTime) {
-
 
 
      return null;
+>>>>>>> e0015dbefbe23c56d2b2a734d1897d760651b5b6
   }
 
   // TODO: CRIO_TASK_MODULE_RESTAURANTSEARCH
@@ -91,8 +84,62 @@ public class RestaurantServiceImpl implements RestaurantService {
   public GetRestaurantsResponse findRestaurantsBySearchQuery(
       GetRestaurantsRequest getRestaurantsRequest, LocalTime currentTime) {
 
+<<<<<<< HEAD
+    Double servingRadiusInKms = -1.0;
+
+    LocalTime timeone1 = LocalTime.of(7, 59, 59);
+    LocalTime timeone2 = LocalTime.of(10, 00, 01);
+    LocalTime timetwo1 = LocalTime.of(12, 59, 59);
+    LocalTime timetwo2 = LocalTime.of(14, 00, 01);
+    LocalTime timethree1 = LocalTime.of(18, 59, 59);
+    LocalTime timethree2 = LocalTime.of(21, 00, 01);
+
+    if (currentTime.isBefore(timeone2) && currentTime.isAfter(timeone1)) {
+      servingRadiusInKms = 3.0;
+    } else if (currentTime.isBefore(timetwo2) && currentTime.isAfter(timetwo1)) {
+      servingRadiusInKms = 3.0;
+    } else if (currentTime.isBefore(timethree2) && currentTime.isAfter(timethree1)) {
+      servingRadiusInKms = 3.0;
+    } else {
+      servingRadiusInKms = 5.0;
+    }
+    List<Restaurant> restaurantsCloseBy = new ArrayList<>();
+
+    if (getRestaurantsRequest.getSearchFor() != null
+        && !getRestaurantsRequest.getSearchFor().isEmpty()) {
+      restaurantsCloseBy = restaurantRepositoryService.findRestaurantsByName(
+        getRestaurantsRequest.getLatitude(), getRestaurantsRequest.getLongitude(),
+        getRestaurantsRequest.getSearchFor(),
+        currentTime, servingRadiusInKms);
+      restaurantsCloseBy.addAll(restaurantRepositoryService.findRestaurantsByAttributes(
+          getRestaurantsRequest.getLatitude(), getRestaurantsRequest.getLongitude(),
+          getRestaurantsRequest.getSearchFor(),
+          currentTime, servingRadiusInKms));
+      restaurantsCloseBy.addAll(restaurantRepositoryService.findRestaurantsByItemName(
+          getRestaurantsRequest.getLatitude(), getRestaurantsRequest.getLongitude(),
+          getRestaurantsRequest.getSearchFor(),
+          currentTime, servingRadiusInKms));
+      restaurantsCloseBy.addAll(restaurantRepositoryService.findRestaurantsByItemAttributes(
+          getRestaurantsRequest.getLatitude(), getRestaurantsRequest.getLongitude(),
+          getRestaurantsRequest.getSearchFor(),
+          currentTime, servingRadiusInKms));
+      return new GetRestaurantsResponse(restaurantsCloseBy);
+    }
+    return new GetRestaurantsResponse(restaurantsCloseBy);
+  }
+
+=======
      return null;
   }
 
+  // TODO: CRIO_TASK_MODULE_MULTITHREADING: Implement multi-threaded version of RestaurantSearch.
+  // Implement variant of findRestaurantsBySearchQuery which is at least 1.5x time faster than
+  // findRestaurantsBySearchQuery.
+  @Override
+  public GetRestaurantsResponse findRestaurantsBySearchQueryMt(
+      GetRestaurantsRequest getRestaurantsRequest, LocalTime currentTime) {
+
+     return null;
+  }
+>>>>>>> e0015dbefbe23c56d2b2a734d1897d760651b5b6
 }
->>>>>>> 965a8c32dbabf91b54a6cee4d022e188d44b7390
