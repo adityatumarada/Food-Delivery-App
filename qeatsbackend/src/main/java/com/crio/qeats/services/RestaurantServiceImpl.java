@@ -53,10 +53,11 @@ public class RestaurantServiceImpl implements RestaurantService {
     }
 
     List<Restaurant> restaurantsCloseBy = restaurantRepositoryService.findAllRestaurantsCloseBy(
-      getRestaurantsRequest.getLatitude(), getRestaurantsRequest.getLongitude(),
-      currentTime, servingRadiusInKms);
+        getRestaurantsRequest.getLatitude(), getRestaurantsRequest.getLongitude(),
+        currentTime, servingRadiusInKms);
 
-    return new GetRestaurantsResponse(restaurantsCloseBy);  }
+    return new GetRestaurantsResponse(restaurantsCloseBy);
+  }
 
   // TODO: CRIO_TASK_MODULE_RESTAURANTSEARCH
   // Implement findRestaurantsBySearchQuery. The request object has the search string.
@@ -91,26 +92,26 @@ public class RestaurantServiceImpl implements RestaurantService {
     }
     List<Restaurant> restaurantsCloseBy = new ArrayList<>();
 
-    restaurantsCloseBy.addAll(restaurantRepositoryService.findRestaurantsByName(
-      getRestaurantsRequest.getLatitude(), getRestaurantsRequest.getLongitude(),
-      getRestaurantsRequest.getSearchFor(),
-      currentTime, servingRadiusInKms));
-
-    restaurantsCloseBy.addAll(restaurantRepositoryService.findRestaurantsByAttributes(
-      getRestaurantsRequest.getLatitude(), getRestaurantsRequest.getLongitude(),
-      getRestaurantsRequest.getSearchFor(),
-      currentTime, servingRadiusInKms));
-
-    restaurantsCloseBy.addAll(restaurantRepositoryService.findRestaurantsByItemName(
-      getRestaurantsRequest.getLatitude(), getRestaurantsRequest.getLongitude(),
-      getRestaurantsRequest.getSearchFor(),
-      currentTime, servingRadiusInKms));
-
-    restaurantsCloseBy.addAll(restaurantRepositoryService.findRestaurantsByItemAttributes(
-      getRestaurantsRequest.getLatitude(), getRestaurantsRequest.getLongitude(),
-      getRestaurantsRequest.getSearchFor(),
-      currentTime, servingRadiusInKms));
-
+    if (getRestaurantsRequest.getSearchFor() != null
+        && !getRestaurantsRequest.getSearchFor().isEmpty()) {
+      restaurantsCloseBy = restaurantRepositoryService.findRestaurantsByName(
+        getRestaurantsRequest.getLatitude(), getRestaurantsRequest.getLongitude(),
+        getRestaurantsRequest.getSearchFor(),
+        currentTime, servingRadiusInKms);
+      restaurantsCloseBy.addAll(restaurantRepositoryService.findRestaurantsByAttributes(
+          getRestaurantsRequest.getLatitude(), getRestaurantsRequest.getLongitude(),
+          getRestaurantsRequest.getSearchFor(),
+          currentTime, servingRadiusInKms));
+      restaurantsCloseBy.addAll(restaurantRepositoryService.findRestaurantsByItemName(
+          getRestaurantsRequest.getLatitude(), getRestaurantsRequest.getLongitude(),
+          getRestaurantsRequest.getSearchFor(),
+          currentTime, servingRadiusInKms));
+      restaurantsCloseBy.addAll(restaurantRepositoryService.findRestaurantsByItemAttributes(
+          getRestaurantsRequest.getLatitude(), getRestaurantsRequest.getLongitude(),
+          getRestaurantsRequest.getSearchFor(),
+          currentTime, servingRadiusInKms));
+      return new GetRestaurantsResponse(restaurantsCloseBy);
+    }
     return new GetRestaurantsResponse(restaurantsCloseBy);
   }
 

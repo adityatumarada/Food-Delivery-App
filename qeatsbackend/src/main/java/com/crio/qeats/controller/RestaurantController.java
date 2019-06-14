@@ -18,9 +18,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.validation.Valid;
-import javax.validation.constraints.NotNull;
-
 @RestController
 @Log4j2
 @RequestMapping(RestaurantController.RESTAURANT_API_ENDPOINT)
@@ -98,63 +95,43 @@ public class RestaurantController {
   // curl -X GET "http://localhost:8081/qeats/v1/restaurants?latitude=28.4900591&longitude=77.536386&searchFor=tamil"
   @GetMapping(RESTAURANTS_API)
   public ResponseEntity<GetRestaurantsResponse> getRestaurants(
-    @Valid
       GetRestaurantsRequest getRestaurantsRequest) {
+
+
     log.info("getRestaurants called with {}", getRestaurantsRequest);
 
     GetRestaurantsResponse getRestaurantsResponse;
+    if (getRestaurantsRequest.getLatitude() == null
+        || getRestaurantsRequest.getLongitude() == null) {
+      return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+    }
 
-    @NotNull
     double lt = getRestaurantsRequest.getLatitude().doubleValue();
-    @NotNull
-    double lg = getRestaurantsRequest.getLongitude().doubleValue();
-    @NotNull
-    String str = getRestaurantsRequest.getSearchFor();
 
-    if (str!=null&&!str.isEmpty()) {
-      getRestaurantsResponse = restaurantService
-        .findRestaurantsBySearchQuery(getRestaurantsRequest, LocalTime.now());
-    } else {
+    double lg = getRestaurantsRequest.getLongitude().doubleValue();
+
+    if (getRestaurantsRequest.getLatitude() == null
+        || getRestaurantsRequest.getLongitude() == null
+        || getRestaurantsRequest.getLatitude().isNaN()
+        || getRestaurantsRequest.getLongitude().isNaN()
+        || lt > 90
+        || lt < 0
+        || lg > 180
+        || lg < 0) {
+      return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+    }
+
+    if (getRestaurantsRequest.getSearchFor() == null
+        || getRestaurantsRequest.getSearchFor().isEmpty()) {
       getRestaurantsResponse = restaurantService
         .findAllRestaurantsCloseBy(getRestaurantsRequest, LocalTime.now());
+      log.info("getRestaurants returned {}", getRestaurantsResponse);
+    } else {
+      getRestaurantsResponse = restaurantService
+        .findRestaurantsBySearchQuery(getRestaurantsRequest, LocalTime.now());
+      log.info("getRestaurants returned {}", getRestaurantsResponse);
     }
-    log.info("getRestaurants returned {}", getRestaurantsResponse);
+
     return ResponseEntity.ok().body(getRestaurantsResponse);
   }
 }
-//
-// log.info("getRestaurants called with {}", getRestaurantsRequest);
-//
-//   GetRestaurantsResponse getRestaurantsResponse;
-//
-//@NotNull
-//    double lt = getRestaurantsRequest.getLatitude().doubleValue();
-//@NotNull
-//    double lg = getRestaurantsRequest.getLongitude().doubleValue();
-//
-//      if (lt > 90
-//      || lt < 0
-//  || lg > 180
-//  || lg < 0) {
-//  return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-//  }
-//  if (getRestaurantsRequest.getLatitude() == null
-//  || getRestaurantsRequest.getLongitude() == null) {
-//  return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-//  }
-//
-//  String searchFor = getRestaurantsRequest.getSearchFor();
-//  boolean isSearch = searchFor != null && !searchFor.isEmpty();
-//
-//  if (isSearch) {
-//  getRestaurantsResponse = restaurantService
-//  .findRestaurantsBySearchQuery(getRestaurantsRequest, LocalTime.now());
-//  } else {
-//  getRestaurantsResponse = restaurantService
-//  .findAllRestaurantsCloseBy(getRestaurantsRequest, LocalTime.now());
-//  log.info("getRestaurants returned {}", getRestaurantsResponse);
-//  }
-//
-//  return ResponseEntity.ok().body(getRestaurantsResponse);
-//
-//

@@ -97,7 +97,7 @@ class RestaurantServiceTest {
     // HINT: Use the `loadRestaurantsDuringNormalHours` utility method to speed things up
 
 
-     assertFalse(false);
+    assertFalse(false);
   }
 
   @Test
