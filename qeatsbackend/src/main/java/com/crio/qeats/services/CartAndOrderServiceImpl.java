@@ -1,6 +1,7 @@
 package com.crio.qeats.services;
 
 import com.crio.qeats.dto.Cart;
+import com.crio.qeats.dto.Item;
 import com.crio.qeats.dto.Order;
 import com.crio.qeats.exceptions.EmptyCartException;
 import com.crio.qeats.exceptions.ItemNotFromSameRestaurantException;
@@ -49,17 +50,19 @@ public class CartAndOrderServiceImpl implements CartAndOrderService {
   }
 
   @Override
-  public CartModifiedResponse addItemToCart(String itemId,
-      String cartId, String restaurantId) throws ItemNotFromSameRestaurantException {
-    Cart cart = cartRepositoryService.addItem(menuService.findItem(itemId,
-        restaurantId),cartId,restaurantId);
-    if (cartRepositoryService.findCartByCartId(cartId).getRestaurantId().equals(restaurantId)) {
-      return new CartModifiedResponse(cart);
-    } else if (!cart.getRestaurantId().isEmpty() && !cart.getRestaurantId().equals(restaurantId)) {
+  public CartModifiedResponse addItemToCart(String itemId, String cartId, String restaurantId)
+      throws ItemNotFromSameRestaurantException {
+    CartModifiedResponse response = new CartModifiedResponse();
+    Cart cart = cartRepositoryService.findCartByCartId(cartId);
+    Item item = menuService.findItem(itemId, restaurantId);
+    if (!cart.getRestaurantId().isEmpty() && !cart.getRestaurantId().equals(restaurantId)) {
       return new CartModifiedResponse(cart,
         new ItemNotFromSameRestaurantException().getErrorType());
     }
-    throw new ItemNotFromSameRestaurantException();
+    cart = cartRepositoryService.addItem(item, cartId, restaurantId);
+    response.setCart(cart);
+    response.setCartResponseType(0);
+    return response;
   }
 
   @Override
