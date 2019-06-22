@@ -58,6 +58,6 @@ public interface RestaurantService {
    * @return GetRestaurantsResponse object containing a list of open restaurants or an
    *     empty list if none fits the criteria.
    */
-  GetRestaurantsResponse findRestaurantsBySearchQueryMt(
-      GetRestaurantsRequest getRestaurantsRequest, LocalTime currentTime);
+  //  GetRestaurantsResponse findRestaurantsBySearchQueryMt(
+  //      GetRestaurantsRequest getRestaurantsRequest, LocalTime currentTime);
 }

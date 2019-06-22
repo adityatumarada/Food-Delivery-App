@@ -1,15 +1,26 @@
+/*
+ *
+ *  * Copyright (c) Crio.Do 2019. All rights reserved
+ *
+ */
 
 package com.crio.qeats.repositories;
 
 import com.crio.qeats.models.MenuEntity;
+<<<<<<< HEAD
+=======
 import java.util.List;
 import java.util.Optional;
+>>>>>>> 3501452f47f4e57f1716d39443c7d321a79f2411
 import org.springframework.data.mongodb.repository.MongoRepository;
 
 public interface MenuRepository extends MongoRepository<MenuEntity, String> {
 
+<<<<<<< HEAD
+=======
   Optional<MenuEntity> findMenuByRestaurantId(String restaurantId);
 
   Optional<List<MenuEntity>> findMenusByItemsItemIdIn(List<String> itemIdList);
 
+>>>>>>> 3501452f47f4e57f1716d39443c7d321a79f2411
 }
